@@ -6,13 +6,23 @@
 #include "GameFramework/Character.h"
 #include "Demon.generated.h"
 
+class ASpell;
+class AS_Spread;
+class AS_Grenade;
+class AS_Vacuum;
+class AS_Water;
 UCLASS()
 class HOLY_API ADemon : public ACharacter
 {
 	GENERATED_BODY()
-
-private:
 	
+	ASpell* Spell_L;
+	ASpell* Spell_R;
+
+	AS_Spread* S_Spread;
+	AS_Grenade* S_Grenade;
+	AS_Vacuum* S_Vacuum;
+	AS_Water* S_Water;
 	
 public:
 	// Sets default values for this character's properties
@@ -31,5 +41,6 @@ public:
 	void Move_X(float Value);
 	void Move_Y(float Value);
 
-	void CastSpellL();
+	void CastSpell_L();
+	void CastSpell_R();
 };

@@ -90,7 +90,7 @@ void ADemonController::IAction_SpellL_Pressed()
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Magenta, string);
 
 	if(Demon)
-		Demon->CastSpellL();
+		Demon->CastSpell_L();
 }
 
 void ADemonController::IAction_SpellL_Released()
@@ -105,6 +105,9 @@ void ADemonController::IAction_SpellR_Pressed()
 	UE_LOG(LogTemp, Warning, TEXT("IAction_SpellR_Pressed"));
 	const FString string = FString::Printf(TEXT("IAction_SpellR_Pressed"));
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Magenta, string);
+
+	if(Demon)
+		Demon->CastSpell_R();
 }
 
 void ADemonController::IAction_SpellR_Released()
@@ -112,6 +115,8 @@ void ADemonController::IAction_SpellR_Released()
 	UE_LOG(LogTemp, Warning, TEXT("IAction_SpellR_Released"));
 	const FString string = FString::Printf(TEXT("IAction_SpellR_Released"));
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Yellow, string);
+
+	
 }
 
 void ADemonController::IAction_SpellLSwap_Pressed()
@@ -119,6 +124,8 @@ void ADemonController::IAction_SpellLSwap_Pressed()
 	UE_LOG(LogTemp, Warning, TEXT("IAction_SpellLSwap_Pressed"));
 	const FString string = FString::Printf(TEXT("IAction_SpellLSwap_Pressed"));
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Magenta, string);
+
+	
 }
 
 void ADemonController::IAction_SpellLSwap_Released()
