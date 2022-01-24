@@ -19,6 +19,6 @@ protected:
 
 public:
 	virtual void Tick(float DeltaTime) override;
-	virtual void InitSpell() override;
+	virtual void InitSpell(ADemon* demonRef) override;
 	virtual void Cast() override;
 };
