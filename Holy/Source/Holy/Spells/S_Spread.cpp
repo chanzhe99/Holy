@@ -17,9 +17,9 @@ void AS_Spread::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AS_Spread::InitSpell()
+void AS_Spread::InitSpell(ADemon* demonRef)
 {
-	Super::InitSpell();
+	Super::InitSpell(demonRef);
 }
 
 void AS_Spread::Cast()

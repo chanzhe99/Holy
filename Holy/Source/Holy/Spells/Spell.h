@@ -6,26 +6,38 @@
 #include "GameFramework/Actor.h"
 #include "Spell.generated.h"
 
+class ADemon;
 UCLASS()
 class HOLY_API ASpell : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	ASpell();
 
+protected:
 	UPROPERTY(EditAnywhere, Category = Mesh)
 	UStaticMeshComponent* SpellMesh;
 	
+	UPROPERTY(EditAnywhere, Category = Spell)
+	UAnimationAsset* SpellAnim_L;
+	UPROPERTY(EditAnywhere, Category = Spell)
+	UAnimationAsset* SpellAnim_R;
+
+	bool IsOnLeftArm = true;
+	UPROPERTY(EditAnywhere, Category = Spell)
+	float SpellCD = 1.f;
+	UPROPERTY(EditAnywhere, Category = Spell)
+	float SpellCD_Count = SpellCD;
+	UPROPERTY()
+	ADemon* Demon;
+	
+public:
+	ASpell();
+	
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
+public:
 	virtual void Tick(float DeltaTime) override;
-
-	virtual void InitSpell();
+	virtual void InitSpell(ADemon* demonRef);
+	virtual void AttachSpell(bool attachToLeftArm);
 	virtual void Cast();
 };

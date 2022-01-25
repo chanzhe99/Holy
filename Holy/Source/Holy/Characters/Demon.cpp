@@ -2,51 +2,91 @@
 
 
 #include "Demon.h"
+#include "Camera/CameraComponent.h"
 #include "Holy/Spells/Spell.h"
 #include "Holy/Spells/S_Spread.h"
 #include "Holy/Spells/S_Grenade.h"
 #include "Holy/Spells/S_Vacuum.h"
 #include "Holy/Spells/S_Water.h"
 
-// Sets default values
 ADemon::ADemon()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	// Create a camera component
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
+	Camera->SetupAttachment(RootComponent);
+	Camera->SetRelativeLocation(FVector(-39.56f, 1.75f, 64.f)); // Position the camera
+	Camera->bUsePawnControlRotation = true;
+
+	// Create hand meshes
+	ArmMesh_L = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("ArmMesh_Left"));
+	ArmMesh_L->SetupAttachment(Camera);
+	ArmMesh_L->CastShadow = false;
+	
+	ArmMesh_R = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("ArmMesh_Right"));
+	ArmMesh_R->SetupAttachment(Camera);
+	ArmMesh_R->CastShadow = false;
 }
 
-// Called when the game starts or when spawned
 void ADemon::BeginPlay()
 {
 	Super::BeginPlay();
 
-	S_Spread = GetWorld()->SpawnActor<AS_Spread>();
-	S_Spread->InitSpell();
-	
-	S_Grenade = GetWorld()->SpawnActor<AS_Grenade>();
-	S_Grenade->InitSpell();
-	
-	S_Vacuum = GetWorld()->SpawnActor<AS_Vacuum>();
-	S_Vacuum->InitSpell();
-	
-	S_Water = GetWorld()->SpawnActor<AS_Water>();
-	S_Water->InitSpell();
-	
-	S_Spread->SetActorTickEnabled(true);
-	Spell_L = S_Spread;
-	Spell_L->AttachToActor(this, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-	if(Spell_L)
-		UE_LOG(LogTemp, Warning, TEXT("Spell_L spawned"));
+	if(IsValid(BPS_Spread))
+	{
+		S_Spread = GetWorld()->SpawnActor<AS_Spread>(BPS_Spread);
+		S_Spread->InitSpell(this);	
+	}
+	else
+	{
+		const FString debugString = FString(TEXT("BPS_Spread BP class not found in Demon BP, please fill in BPS_Spread in Demon BP"));
+		GEngine->AddOnScreenDebugMessage(96, 999.f, FColor::Red, debugString);
+		UE_LOG(LogTemp, Error, TEXT("%s"), *debugString);
+	}
 
-	S_Grenade->SetActorTickEnabled(true);
-	Spell_R = S_Grenade;
-	Spell_R->AttachToActor(this, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-	if(Spell_R)
-		UE_LOG(LogTemp, Warning, TEXT("Spell_R spawned"));
+	if(IsValid(BPS_Grenade))
+	{
+		S_Grenade = GetWorld()->SpawnActor<AS_Grenade>(BPS_Grenade);
+		S_Grenade->InitSpell(this);
+	}
+	else
+	{
+		const FString debugString = FString(TEXT("BPS_Grenade BP class not found in Demon BP, please fill in BPS_Grenade in Demon BP"));
+		GEngine->AddOnScreenDebugMessage(97, 999.f, FColor::Red, debugString);
+		UE_LOG(LogTemp, Error, TEXT("%s"), *debugString);
+	}
+
+	if(IsValid(BPS_Vacuum))
+	{
+		S_Vacuum = GetWorld()->SpawnActor<AS_Vacuum>(BPS_Vacuum);
+		S_Vacuum->InitSpell(this);
+	}
+	else
+	{
+		const FString debugString = FString(TEXT("BPS_Vacuum BP class not found in Demon BP, please fill in BPS_Vacuum in Demon BP"));
+		GEngine->AddOnScreenDebugMessage(98, 999.f, FColor::Red, debugString);
+		UE_LOG(LogTemp, Error, TEXT("%s"), *debugString);
+	}
+
+	if(IsValid(BPS_Water))
+	{
+		S_Water = GetWorld()->SpawnActor<AS_Water>(BPS_Water);
+		S_Water->InitSpell(this);
+	}
+	else
+	{
+		const FString debugString = FString(TEXT("BPS_Water BP class not found in Demon BP, please fill in BPS_Water in Demon BP"));
+		GEngine->AddOnScreenDebugMessage(99, 9999.f, FColor::Red, debugString);
+		UE_LOG(LogTemp, Error, TEXT("%s"), *debugString);
+	}
+
+	if(S_Spread)
+		S_Spread->AttachSpell(true);
+	if(S_Grenade)
+		S_Grenade->AttachSpell(false);
 }
 
-// Called every frame
 void ADemon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -75,13 +115,13 @@ void ADemon::Move_Y(float Value)
 		AddMovementInput(GetActorRightVector(), Value);
 }
 
-void ADemon::CastSpell_L()
+void ADemon::CastSpell_L() const
 {
 	if(Spell_L)
 		Spell_L->Cast();
 }
 
-void ADemon::CastSpell_R()
+void ADemon::CastSpell_R() const
 {
 	if(Spell_R)
 		Spell_R->Cast();

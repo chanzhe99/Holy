@@ -11,29 +11,45 @@ class AS_Spread;
 class AS_Grenade;
 class AS_Vacuum;
 class AS_Water;
+
 UCLASS()
 class HOLY_API ADemon : public ACharacter
 {
 	GENERATED_BODY()
-	
-	ASpell* Spell_L;
-	ASpell* Spell_R;
 
+	UPROPERTY(EditAnywhere, Category = Spells)
+	TSubclassOf<AS_Spread> BPS_Spread;
 	AS_Spread* S_Spread;
+	UPROPERTY(EditAnywhere, Category = Spells)
+	TSubclassOf<AS_Grenade> BPS_Grenade;
 	AS_Grenade* S_Grenade;
+	UPROPERTY(EditAnywhere, Category = Spells)
+	TSubclassOf<AS_Vacuum> BPS_Vacuum;
 	AS_Vacuum* S_Vacuum;
+	UPROPERTY(EditAnywhere, Category = Spells)
+	TSubclassOf<AS_Water> BPS_Water;
 	AS_Water* S_Water;
 	
 public:
-	// Sets default values for this character's properties
+	UPROPERTY(VisibleAnywhere)
+	class UCameraComponent* Camera;
+	UPROPERTY(VisibleAnywhere)
+	USkeletalMeshComponent* ArmMesh_L;
+	UPROPERTY(VisibleAnywhere)
+	USkeletalMeshComponent* ArmMesh_R;
+	
+	UPROPERTY(VisibleAnywhere, Category = Spells)
+	ASpell* Spell_L;
+	UPROPERTY(VisibleAnywhere, Category = Spells)
+	ASpell* Spell_R;
+
+	
 	ADemon();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
+public:
 	virtual void Tick(float DeltaTime) override;
 
 	void Look_X(float Value);
@@ -41,6 +57,6 @@ public:
 	void Move_X(float Value);
 	void Move_Y(float Value);
 
-	void CastSpell_L();
-	void CastSpell_R();
+	void CastSpell_L() const;
+	void CastSpell_R() const;
 };

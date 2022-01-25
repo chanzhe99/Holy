@@ -17,9 +17,9 @@ void AS_Grenade::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AS_Grenade::InitSpell()
+void AS_Grenade::InitSpell(ADemon* demonRef)
 {
-	Super::InitSpell();
+	Super::InitSpell(demonRef);
 }
 
 void AS_Grenade::Cast()

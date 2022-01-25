@@ -1,43 +1,71 @@
 // Copyright Pizza Masters 5, All Rights Reserved.
 
 
- #include "Spell.h"
+#include "Spell.h"
+#include "Holy/Characters/Demon.h"
 
-// Sets default values
 ASpell::ASpell()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	SpellMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Spell Mesh"));
 	SpellMesh->SetupAttachment(RootComponent);
 }
 
-// Called when the game starts or when spawned
 void ASpell::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
-// Called every frame
 void ASpell::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	UE_LOG(LogTemp, Warning, TEXT("%s - Tick"), *GetNameSafe(this));
+
+	if(SpellCD_Count < SpellCD)
+		SpellCD_Count += DeltaTime;
 }
 
-void ASpell::InitSpell()
+void ASpell::InitSpell(ADemon* demonRef)
 {
 	SetActorTickEnabled(false);
 	SetActorLocation(FVector(0, 0, -4000));
+	Demon = demonRef;
+}
+
+void ASpell::AttachSpell(bool attachToLeftArm)
+{
+	SetActorTickEnabled(true);
+	IsOnLeftArm = attachToLeftArm;
+	if (IsOnLeftArm)
+	{
+		Demon->Spell_L = this;
+		AttachToActor(Demon, FAttachmentTransformRules::SnapToTargetNotIncludingScale, "Spell_L");
+		UE_LOG(LogTemp, Warning, TEXT("%s attached to Left Arm"), *GetNameSafe(this));
+	}
+	else
+	{
+		Demon->Spell_R = this;
+		AttachToActor(Demon, FAttachmentTransformRules::SnapToTargetNotIncludingScale, "Spell_R");
+		UE_LOG(LogTemp, Warning, TEXT("%s attached to Right Arm"), *GetNameSafe(this));
+	}
 }
 
 void ASpell::Cast()
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s casted"), *GetNameSafe(this));
-	const FString string = FString::Printf(TEXT("Spell - %s"), *GetNameSafe(this));
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue, string);
-	
+	if(SpellCD_Count >= SpellCD)
+	{
+		SpellCD_Count = 0;
+		const FString debugString = FString::Printf(TEXT("%s casted"), *GetNameSafe(this));
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue, debugString);
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *debugString);
+	}
+	else
+	{
+		const FString debugString = FString::Printf(TEXT("%s is on CD"), *GetNameSafe(this));
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue, debugString);
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *debugString);
+	}
 }
 
