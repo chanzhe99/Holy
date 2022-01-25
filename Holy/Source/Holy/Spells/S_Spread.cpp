@@ -6,6 +6,7 @@
 #include "SpellProjectile.h"
 #include "../Characters/Demon.h"
 #include "Camera/CameraComponent.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
 AS_Spread::AS_Spread()
@@ -77,7 +78,7 @@ void AS_Spread::Cast()
 
 		const FRotator SpawnRotation = Demon->GetControlRotation();
 		// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
-		const FVector SpawnLocation = Demon->Spell_R_SpawnOffset->GetComponentLocation(); /*+ SpawnRotation.RotateVector(GunOffset);*/
+		const FVector SpawnLocation = ProjectileSpawnOffset->GetComponentLocation(); /*+ SpawnRotation.RotateVector(GunOffset);*/
 		// ^This one need to add gun muzzle offset, spawning at Player location will cause collision with player if collision with pawn channel is turned on
 
 		//Set Spawn Collision Handling Override
@@ -90,7 +91,8 @@ void AS_Spread::Cast()
 
 		FVector direction = endPoint - bullet->GetActorLocation();
 		direction = direction.GetSafeNormal();
-		bullet->MovementComponent->Velocity = direction * 50;
+		bullet->InitProjectile(ProjectileData);
+		bullet->GetProjectileMovement()->Velocity = direction * ProjectileData.speed;
 		
 		//bullet->FindComponentByClass<UProjectileMovementComponent>()->SetVelocityInLocalSpace(direction * 1);
 		//bullet->FindComponentByClass<UPrimitiveComponent>()->AddImpulse(endPoint * 10);

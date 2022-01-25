@@ -38,15 +38,15 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* ArmMesh_R;
 	UPROPERTY(VisibleAnywhere)
+	USceneComponent* Spell_L_SpawnOffset;
+	UPROPERTY(VisibleAnywhere)
 	USceneComponent* Spell_R_SpawnOffset;
-	
 	
 	UPROPERTY(VisibleAnywhere, Category = Spells)
 	ASpell* Spell_L;
 	UPROPERTY(VisibleAnywhere, Category = Spells)
 	ASpell* Spell_R;
 
-	
 	ADemon();
 
 protected:

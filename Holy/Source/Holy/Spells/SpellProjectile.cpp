@@ -2,6 +2,7 @@
 
 
 #include "SpellProjectile.h"
+#include "Spell.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
@@ -11,33 +12,34 @@ ASpellProjectile::ASpellProjectile()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	Collider = CreateDefaultSubobject<USphereComponent>("ProjectileCollider");
-	Collider->InitSphereRadius(5.f);
-	Collider->BodyInstance.SetCollisionProfileName("Projectile");
-	Collider->SetupAttachment(RootComponent);
+	ProjectileCollider = CreateDefaultSubobject<USphereComponent>("ProjectileCollider");
+	ProjectileCollider->InitSphereRadius(5.f);
+	ProjectileCollider->BodyInstance.SetCollisionProfileName("Projectile");
+	ProjectileCollider->OnComponentHit.AddDynamic(this, &ASpellProjectile::OnHit);
+	ProjectileCollider->SetupAttachment(RootComponent);
 	
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ProjectileMesh"));
-	Mesh->SetupAttachment(Collider);
+	ProjectileMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ProjectileMesh"));
+	ProjectileMesh->SetupAttachment(ProjectileCollider);
 
-	MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("MovementComponent"));
-	MovementComponent->UpdatedComponent = Collider;
+	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("MovementComponent"));
+	ProjectileMovement->UpdatedComponent = ProjectileCollider;
 	/*MovementComponent->InitialSpeed = 3000.f;
 	MovementComponent->MaxSpeed = 3000.f;*/
-	MovementComponent->bRotationFollowsVelocity = true;
-	MovementComponent->bShouldBounce = true;
+	ProjectileMovement->bRotationFollowsVelocity = true;
+	ProjectileMovement->bShouldBounce = true;
 }
 
-// Called when the game starts or when spawned
-void ASpellProjectile::BeginPlay()
+void ASpellProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	FVector NormalImpulse, const FHitResult& Hit)
 {
-	Super::BeginPlay();
 	
 }
 
-// Called every frame
-void ASpellProjectile::Tick(float DeltaTime)
+void ASpellProjectile::InitProjectile(FProjectileData desiredData) const
 {
-	Super::Tick(DeltaTime);
-
+	ProjectileMesh->SetStaticMesh(desiredData.mesh);
+	ProjectileMesh->SetRelativeScale3D(desiredData.meshSize);
+	ProjectileCollider->SetSphereRadius(desiredData.colliderRadius);
+	ProjectileMovement->ProjectileGravityScale = desiredData.gravityScale;
 }
 

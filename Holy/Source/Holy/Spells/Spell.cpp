@@ -41,14 +41,16 @@ void ASpell::AttachSpell(bool attachToLeftArm)
 	if (IsOnLeftArm)
 	{
 		Demon->Spell_L = this;
+		ProjectileSpawnOffset = Demon->Spell_L_SpawnOffset;
 		AttachToActor(Demon, FAttachmentTransformRules::SnapToTargetNotIncludingScale, "Spell_L");
-		UE_LOG(LogTemp, Warning, TEXT("%s attached to Left Arm"), *GetNameSafe(this));
+		//UE_LOG(LogTemp, Warning, TEXT("%s attached to Left Arm"), *GetNameSafe(this));
 	}
 	else
 	{
 		Demon->Spell_R = this;
+		ProjectileSpawnOffset = Demon->Spell_R_SpawnOffset;
 		AttachToActor(Demon, FAttachmentTransformRules::SnapToTargetNotIncludingScale, "Spell_R");
-		UE_LOG(LogTemp, Warning, TEXT("%s attached to Right Arm"), *GetNameSafe(this));
+		//UE_LOG(LogTemp, Warning, TEXT("%s attached to Right Arm"), *GetNameSafe(this));
 	}
 }
 
@@ -59,13 +61,12 @@ void ASpell::Cast()
 		SpellCD_Count = 0;
 		const FString debugString = FString::Printf(TEXT("%s casted"), *GetNameSafe(this));
 		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue, debugString);
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *debugString);
+		//UE_LOG(LogTemp, Warning, TEXT("%s"), *debugString);
 	}
 	else
 	{
 		const FString debugString = FString::Printf(TEXT("%s is on CD"), *GetNameSafe(this));
 		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue, debugString);
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *debugString);
+		//UE_LOG(LogTemp, Warning, TEXT("%s"), *debugString);
 	}
 }
-

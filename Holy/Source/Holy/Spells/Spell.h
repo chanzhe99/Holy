@@ -6,6 +6,23 @@
 #include "GameFramework/Actor.h"
 #include "Spell.generated.h"
 
+USTRUCT()
+struct FProjectileData
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere)
+	UStaticMesh* mesh;
+	UPROPERTY(EditAnywhere)
+	FVector meshSize;
+	UPROPERTY(EditAnywhere)
+	float colliderRadius;
+	UPROPERTY(EditAnywhere)
+	float speed;
+	UPROPERTY(EditAnywhere)
+	float gravityScale;
+};
+
 UCLASS()
 class HOLY_API ASpell : public AActor
 {
@@ -30,6 +47,9 @@ protected:
 	float SpellCD_Count = SpellCD;
 	UPROPERTY()
 	class ADemon* Demon;
+	UPROPERTY()
+	USceneComponent* ProjectileSpawnOffset;
+	FProjectileData ProjectileData;
 	
 public:
 	ASpell();
