@@ -3,10 +3,9 @@
 
 #include "S_Spread.h"
 #include "DrawDebugHelpers.h"
+#include "SpellProjectile.h"
 #include "../Characters/Demon.h"
 #include "Camera/CameraComponent.h"
-#include "GameFramework/Controller.h"
-#include "../HolyProjectile.h"
 
 AS_Spread::AS_Spread()
 {
@@ -85,7 +84,7 @@ void AS_Spread::Cast()
 
 		// spawn the projectile at the muzzle
 		UE_LOG(LogTemp, Warning, TEXT("Spawning Shotgun Pallet"));
-		AActor* bullet = GetWorld()->SpawnActor<AHolyProjectile>(SpellProjectile, SpawnLocation, SpawnRotation);
+		AActor* bullet = GetWorld()->SpawnActor<ASpellProjectile>(SpellProjectile, SpawnLocation, SpawnRotation);
 
 		FVector direction = endPoint - bullet->GetActorLocation();
 		direction = direction.GetSafeNormal();

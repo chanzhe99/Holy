@@ -5,6 +5,7 @@
 
 AS_Grenade::AS_Grenade()
 {
+	
 }
 
 void AS_Grenade::BeginPlay()

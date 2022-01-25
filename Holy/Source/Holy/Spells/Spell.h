@@ -6,7 +6,6 @@
 #include "GameFramework/Actor.h"
 #include "Spell.generated.h"
 
-class ADemon;
 UCLASS()
 class HOLY_API ASpell : public AActor
 {
@@ -21,8 +20,8 @@ protected:
 	UPROPERTY(EditAnywhere, Category = Spell)
 	UAnimationAsset* SpellAnim_R;
 
-	UPROPERTY(EditDefaultsOnly, Category = Projectile)
-	TSubclassOf<class AHolyProjectile> SpellProjectile;
+	UPROPERTY(EditDefaultsOnly, Category = Spell)
+	TSubclassOf<class ASpellProjectile> SpellProjectile;
 
 	bool IsOnLeftArm = true;
 	UPROPERTY(EditAnywhere, Category = Spell)
@@ -30,7 +29,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = Spell)
 	float SpellCD_Count = SpellCD;
 	UPROPERTY()
-	ADemon* Demon;
+	class ADemon* Demon;
 	
 public:
 	ASpell();
