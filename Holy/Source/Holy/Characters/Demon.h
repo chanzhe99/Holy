@@ -37,6 +37,9 @@ public:
 	USkeletalMeshComponent* ArmMesh_L;
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* ArmMesh_R;
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* Spell_R_SpawnOffset;
+	
 	
 	UPROPERTY(VisibleAnywhere, Category = Spells)
 	ASpell* Spell_L;

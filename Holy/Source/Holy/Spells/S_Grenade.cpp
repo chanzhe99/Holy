@@ -5,6 +5,7 @@
 
 AS_Grenade::AS_Grenade()
 {
+	
 }
 
 void AS_Grenade::BeginPlay()
@@ -25,4 +26,6 @@ void AS_Grenade::InitSpell(ADemon* demonRef)
 void AS_Grenade::Cast()
 {
 	Super::Cast();
+
+	
 }

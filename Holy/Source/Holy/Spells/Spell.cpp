@@ -21,7 +21,7 @@ void ASpell::BeginPlay()
 void ASpell::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	UE_LOG(LogTemp, Warning, TEXT("%s - Tick"), *GetNameSafe(this));
+	//UE_LOG(LogTemp, Warning, TEXT("%s - Tick"), *GetNameSafe(this));
 
 	if(SpellCD_Count < SpellCD)
 		SpellCD_Count += DeltaTime;
