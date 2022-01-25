@@ -26,4 +26,6 @@ void AS_Grenade::InitSpell(ADemon* demonRef)
 void AS_Grenade::Cast()
 {
 	Super::Cast();
+
+	
 }

@@ -16,10 +16,11 @@ class HOLY_API ASpellProjectile : public AActor
 	UPROPERTY(EditAnywhere, Category = Components)
 	class UStaticMeshComponent* Mesh;
 
+	
+public:
 	UPROPERTY(EditAnywhere, Category = Components)
 	class UProjectileMovementComponent* MovementComponent;
 	
-public:	
 	// Sets default values for this actor's properties
 	ASpellProjectile();
 

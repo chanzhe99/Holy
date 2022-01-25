@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "GameFramework/Actor.h"   
 #include "HolyProjectile.generated.h"
 
 class USphereComponent;

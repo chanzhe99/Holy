@@ -27,6 +27,9 @@ ADemon::ADemon()
 	ArmMesh_R = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("ArmMesh_Right"));
 	ArmMesh_R->SetupAttachment(Camera);
 	ArmMesh_R->CastShadow = false;
+
+	Spell_R_SpawnOffset = CreateDefaultSubobject<USceneComponent>(TEXT("Spell_R_SpawnOffset"));
+	Spell_R_SpawnOffset->SetupAttachment(ArmMesh_R);
 }
 
 void ADemon::BeginPlay()

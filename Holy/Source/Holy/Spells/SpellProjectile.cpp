@@ -21,8 +21,8 @@ ASpellProjectile::ASpellProjectile()
 
 	MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("MovementComponent"));
 	MovementComponent->UpdatedComponent = Collider;
-	MovementComponent->InitialSpeed = 3000.f;
-	MovementComponent->MaxSpeed = 3000.f;
+	/*MovementComponent->InitialSpeed = 3000.f;
+	MovementComponent->MaxSpeed = 3000.f;*/
 	MovementComponent->bRotationFollowsVelocity = true;
 	MovementComponent->bShouldBounce = true;
 }

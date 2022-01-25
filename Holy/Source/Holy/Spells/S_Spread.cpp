@@ -6,6 +6,7 @@
 #include "SpellProjectile.h"
 #include "../Characters/Demon.h"
 #include "Camera/CameraComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 
 AS_Spread::AS_Spread()
 {
@@ -49,17 +50,18 @@ void AS_Spread::InitSpell(ADemon* demonRef)
 void AS_Spread::Cast()
 {
 	Super::Cast();
-	UE_LOG(LogTemp, Warning, TEXT("Shotgun is shoot"));
+	
 	FVector bulletVector;
+	FVector cameraTransform = Demon->Camera->GetComponentTransform().GetLocation();
+	FVector cameraForward = Demon->Camera->GetForwardVector();
+	FVector cameraRight = Demon->Camera->GetRightVector();
+	FVector cameraUp = Demon->Camera->GetUpVector();
 	for (int i = 0; i <= PalletCount; i++)
 	{
 		bulletVector = CalculatePalletSpread(Radius);
 		FHitResult hit;
 		// These dont have to be in for loop
-		FVector cameraTransform = Demon->Camera->GetComponentTransform().GetLocation();
-		FVector cameraForward = Demon->Camera->GetForwardVector();
-		FVector cameraRight = Demon->Camera->GetRightVector();
-		FVector cameraUp = Demon->Camera->GetUpVector();
+		
 		//
 		FVector endPoint = (cameraTransform + cameraForward * BulletDistance) + (cameraRight * bulletVector.X) + (cameraUp * bulletVector.Y);
 		FCollisionQueryParams CollisionParams;
@@ -75,19 +77,21 @@ void AS_Spread::Cast()
 
 		const FRotator SpawnRotation = Demon->GetControlRotation();
 		// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
-		const FVector SpawnLocation = Demon->GetActorLocation(); /*+ SpawnRotation.RotateVector(GunOffset);*/
+		const FVector SpawnLocation = Demon->Spell_R_SpawnOffset->GetComponentLocation(); /*+ SpawnRotation.RotateVector(GunOffset);*/
 		// ^This one need to add gun muzzle offset, spawning at Player location will cause collision with player if collision with pawn channel is turned on
 
 		//Set Spawn Collision Handling Override
-		FActorSpawnParameters ActorSpawnParams;
-		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+		// FActorSpawnParameters ActorSpawnParams;
+		// ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 		// spawn the projectile at the muzzle
-		UE_LOG(LogTemp, Warning, TEXT("Spawning Shotgun Pallet"));
-		AActor* bullet = GetWorld()->SpawnActor<ASpellProjectile>(SpellProjectile, SpawnLocation, SpawnRotation);
+		//UE_LOG(LogTemp, Warning, TEXT("Spawning Shotgun Pallet"));
+		ASpellProjectile* bullet = GetWorld()->SpawnActor<ASpellProjectile>(SpellProjectile, SpawnLocation, SpawnRotation);
 
 		FVector direction = endPoint - bullet->GetActorLocation();
 		direction = direction.GetSafeNormal();
+		bullet->MovementComponent->Velocity = direction * 50;
+		
 		//bullet->FindComponentByClass<UProjectileMovementComponent>()->SetVelocityInLocalSpace(direction * 1);
 		//bullet->FindComponentByClass<UPrimitiveComponent>()->AddImpulse(endPoint * 10);
 	}
