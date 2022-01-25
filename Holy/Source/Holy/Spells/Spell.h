@@ -21,6 +21,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = Spell)
 	UAnimationAsset* SpellAnim_R;
 
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	TSubclassOf<class AHolyProjectile> SpellProjectile;
+
 	bool IsOnLeftArm = true;
 	UPROPERTY(EditAnywhere, Category = Spell)
 	float SpellCD = 1.f;
