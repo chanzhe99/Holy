@@ -7,6 +7,7 @@
 
 ASP_Grenade::ASP_Grenade()
 {
+	ProjectileSpeed = 300;
 }
 
 void ASP_Grenade::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
