@@ -2902,6 +2902,10 @@
 			"Type": "UFS"
 		},
 		{
+			"Path": "$(EngineDir)/Plugins/FX/NiagaraExtras/NiagaraExtras.uplugin",
+			"Type": "UFS"
+		},
+		{
 			"Path": "$(ProjectDir)/Plugins/Developer/RiderLink/RiderLink.uplugin",
 			"Type": "UFS"
 		},

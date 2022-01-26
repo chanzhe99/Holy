@@ -2,7 +2,6 @@
 
 
 #include "SpellProjectile.h"
-#include "Spell.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
@@ -23,10 +22,13 @@ ASpellProjectile::ASpellProjectile()
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("MovementComponent"));
 	ProjectileMovement->UpdatedComponent = ProjectileCollider;
-	/*MovementComponent->InitialSpeed = 3000.f;
-	MovementComponent->MaxSpeed = 3000.f;*/
 	ProjectileMovement->bRotationFollowsVelocity = true;
-	ProjectileMovement->bShouldBounce = true;
+}
+
+void ASpellProjectile::InitProjectile(FVector desiredDirection) const
+{
+	ProjectileMovement->Velocity = desiredDirection * ProjectileSpeed;
+	//ProjectileMovement->InitialSpeed = ProjectileSpeed;
 }
 
 void ASpellProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
@@ -34,12 +36,3 @@ void ASpellProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, U
 {
 	
 }
-
-void ASpellProjectile::InitProjectile(FProjectileData desiredData) const
-{
-	ProjectileMesh->SetStaticMesh(desiredData.mesh);
-	ProjectileMesh->SetRelativeScale3D(desiredData.meshSize);
-	ProjectileCollider->SetSphereRadius(desiredData.colliderRadius);
-	ProjectileMovement->ProjectileGravityScale = desiredData.gravityScale;
-}
-

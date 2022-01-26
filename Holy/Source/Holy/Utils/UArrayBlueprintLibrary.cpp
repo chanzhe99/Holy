@@ -2,7 +2,3 @@
 
 #include "UArrayBlueprintLibrary.h"
 
-void UUArrayBlueprintLibrary::QuickSort()
-{
-	
-}
