@@ -100,5 +100,6 @@ void AS_Spread::SpawnPellet(FVector endVector)
 
 	FVector direction = endVector - bullet->GetActorLocation();
 	direction = direction.GetSafeNormal();
+	bullet->InitProjectile(direction);
 	//bullet->ProjectileMovement->Velocity = direction * 100;
 }
