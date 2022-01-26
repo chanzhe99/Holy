@@ -13,6 +13,63 @@ AS_Spread::AS_Spread()
 	
 }
 
+void AS_Spread::BeginPlay()
+{
+	Super::BeginPlay();
+
+	BulletAngle = FMath::DegreesToRadians(BulletAngle);
+	Radius = BulletAngle * BulletDistance;
+}
+
+void AS_Spread::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+}
+
+void AS_Spread::InitSpell(ADemon* demonRef)
+{
+	Super::InitSpell(demonRef);
+}
+
+void AS_Spread::Cast()
+{
+	Super::Cast();
+	
+	// This is not good, need discussion.
+	FVector bulletVector;
+	FVector cameraTransform = Demon->Camera->GetComponentTransform().GetLocation();
+	FVector cameraForward = Demon->Camera->GetForwardVector();
+	FVector cameraRight = Demon->Camera->GetRightVector();
+	FVector cameraUp = Demon->Camera->GetUpVector();
+
+	for (int i = 0; i <= PalletCount; i++)
+	{
+		//Randomizes a vector for a bullet
+		bulletVector = CalculatePalletSpread(Radius);
+
+		//Determine an endpoint of the vector.
+		FVector endPoint = (cameraTransform + cameraForward * BulletDistance) + // camera plus bullet fly distance.
+						   (cameraRight * bulletVector.X) + // offset the bullet on X axis
+						   (cameraUp * bulletVector.Y);     // offest the bullet on Y axis
+
+        //Raycasts to the vector.
+		FHitResult hit;
+		FCollisionQueryParams CollisionParams;
+		GetWorld()->LineTraceSingleByChannel(
+			hit,
+			cameraTransform,
+			endPoint, 
+			ECC_WorldDynamic,
+			CollisionParams);
+
+		//Debug Line.
+		DrawDebugLine(GetWorld(), cameraTransform, endPoint, FColor::Green, false, 2.f, false, 4.f);
+
+		//Spawn it
+		SpawnPellet(endPoint);
+	}
+}
+
 FVector AS_Spread::CalculatePalletSpread(float radius)
 {
 	float angle;
@@ -32,67 +89,16 @@ FVector AS_Spread::CalculatePalletSpread(float radius)
 	return returnPoint;
 }
 
-void AS_Spread::BeginPlay()
+void AS_Spread::SpawnPellet(FVector endVector)
 {
-	Super::BeginPlay();
-}
+	const FRotator SpawnRotation = Demon->GetControlRotation();
+	// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
+	const FVector SpawnLocation = Demon->Spell_R_SpawnOffset->GetComponentLocation();
+	// ^This one need to add gun muzzle offset, spawning at Player location will cause collision with player if collision with pawn channel is turned on
 
-void AS_Spread::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
+	ASpellProjectile* bullet = GetWorld()->SpawnActor<ASpellProjectile>(SpellProjectile, SpawnLocation, SpawnRotation);
 
-void AS_Spread::InitSpell(ADemon* demonRef)
-{
-	Super::InitSpell(demonRef);
-}
-
-void AS_Spread::Cast()
-{
-	Super::Cast();
-	
-	FVector bulletVector;
-	FVector cameraTransform = Demon->Camera->GetComponentTransform().GetLocation();
-	FVector cameraForward = Demon->Camera->GetForwardVector();
-	FVector cameraRight = Demon->Camera->GetRightVector();
-	FVector cameraUp = Demon->Camera->GetUpVector();
-	for (int i = 0; i <= PalletCount; i++)
-	{
-		bulletVector = CalculatePalletSpread(Radius);
-		FHitResult hit;
-		// These dont have to be in for loop
-		
-		//
-		FVector endPoint = (cameraTransform + cameraForward * BulletDistance) + (cameraRight * bulletVector.X) + (cameraUp * bulletVector.Y);
-		FCollisionQueryParams CollisionParams;
-
-		GetWorld()->LineTraceSingleByChannel(
-			hit,
-			cameraTransform,
-			(cameraTransform + cameraForward * BulletDistance) + (cameraRight * bulletVector.X) + (cameraUp * bulletVector.Y), // can use endPoint var for this
-			ECC_WorldDynamic,
-			CollisionParams);
-
-		DrawDebugLine(GetWorld(), cameraTransform, (cameraTransform + cameraForward * BulletDistance) + (cameraRight * bulletVector.X) + (cameraUp * bulletVector.Y), FColor::Green, false, 2.f, false, 4.f);
-
-		const FRotator SpawnRotation = Demon->GetControlRotation();
-		// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
-		const FVector SpawnLocation = Demon->Spell_R_SpawnOffset->GetComponentLocation(); /*+ SpawnRotation.RotateVector(GunOffset);*/
-		// ^This one need to add gun muzzle offset, spawning at Player location will cause collision with player if collision with pawn channel is turned on
-
-		//Set Spawn Collision Handling Override
-		// FActorSpawnParameters ActorSpawnParams;
-		// ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-
-		// spawn the projectile at the muzzle
-		//UE_LOG(LogTemp, Warning, TEXT("Spawning Shotgun Pallet"));
-		ASpellProjectile* bullet = GetWorld()->SpawnActor<ASpellProjectile>(SpellProjectile, SpawnLocation, SpawnRotation);
-
-		FVector direction = endPoint - bullet->GetActorLocation();
-		direction = direction.GetSafeNormal();
-		bullet->MovementComponent->Velocity = direction * 50;
-		
-		//bullet->FindComponentByClass<UProjectileMovementComponent>()->SetVelocityInLocalSpace(direction * 1);
-		//bullet->FindComponentByClass<UPrimitiveComponent>()->AddImpulse(endPoint * 10);
-	}
+	FVector direction = endVector - bullet->GetActorLocation();
+	direction = direction.GetSafeNormal();
+	bullet->MovementComponent->Velocity = direction * 600;
 }

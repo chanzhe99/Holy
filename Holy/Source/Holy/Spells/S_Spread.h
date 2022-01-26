@@ -33,6 +33,7 @@ public:
 
 private:
 	FVector CalculatePalletSpread(float radius);
+	void SpawnPellet(FVector endVector);
 
 protected:
 	virtual void BeginPlay() override;
