@@ -87,8 +87,8 @@ void ADemon::BeginPlay()
 
 	if(S_Spread)
 		S_Spread->AttachSpell(true);
-	if(S_Grenade)
-		S_Grenade->AttachSpell(false);
+	if(S_Vacuum)
+		S_Vacuum->AttachSpell(false);
 }
 
 void ADemon::Tick(float DeltaTime)
