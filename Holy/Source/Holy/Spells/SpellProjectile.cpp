@@ -11,33 +11,28 @@ ASpellProjectile::ASpellProjectile()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	Collider = CreateDefaultSubobject<USphereComponent>("ProjectileCollider");
-	Collider->InitSphereRadius(5.f);
-	Collider->BodyInstance.SetCollisionProfileName("Projectile");
-	Collider->SetupAttachment(RootComponent);
+	ProjectileCollider = CreateDefaultSubobject<USphereComponent>("ProjectileCollider");
+	ProjectileCollider->InitSphereRadius(5.f);
+	ProjectileCollider->BodyInstance.SetCollisionProfileName("Projectile");
+	ProjectileCollider->OnComponentHit.AddDynamic(this, &ASpellProjectile::OnHit);
+	ProjectileCollider->SetupAttachment(RootComponent);
 	
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ProjectileMesh"));
-	Mesh->SetupAttachment(Collider);
+	ProjectileMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ProjectileMesh"));
+	ProjectileMesh->SetupAttachment(ProjectileCollider);
 
-	MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("MovementComponent"));
-	MovementComponent->UpdatedComponent = Collider;
-	/*MovementComponent->InitialSpeed = 3000.f;
-	MovementComponent->MaxSpeed = 3000.f;*/
-	MovementComponent->bRotationFollowsVelocity = true;
-	MovementComponent->bShouldBounce = true;
+	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("MovementComponent"));
+	ProjectileMovement->UpdatedComponent = ProjectileCollider;
+	ProjectileMovement->bRotationFollowsVelocity = true;
 }
 
-// Called when the game starts or when spawned
-void ASpellProjectile::BeginPlay()
+void ASpellProjectile::InitProjectile(FVector desiredDirection) const
 {
-	Super::BeginPlay();
+	ProjectileMovement->Velocity = desiredDirection * ProjectileSpeed;
+	//ProjectileMovement->InitialSpeed = ProjectileSpeed;
+}
+
+void ASpellProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	FVector NormalImpulse, const FHitResult& Hit)
+{
 	
 }
-
-// Called every frame
-void ASpellProjectile::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-

@@ -12,24 +12,18 @@ class HOLY_API ASpellProjectile : public AActor
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, Category = Components)
-	class USphereComponent* Collider;
+	class USphereComponent* ProjectileCollider;
 	UPROPERTY(EditAnywhere, Category = Components)
-	class UStaticMeshComponent* Mesh;
+	UStaticMeshComponent* ProjectileMesh;
+	UPROPERTY(EditAnywhere, Category = Components)
+	class UProjectileMovementComponent* ProjectileMovement;
+	UPROPERTY(EditAnywhere, Category = ProjectileData)
+	float ProjectileSpeed = 0;
 
-	
 public:
-	UPROPERTY(EditAnywhere, Category = Components)
-	class UProjectileMovementComponent* MovementComponent;
-	
-	// Sets default values for this actor's properties
 	ASpellProjectile();
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
+	
+	virtual void InitProjectile(FVector desiredDirection) const;
+	UFUNCTION()
+	virtual void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 };
