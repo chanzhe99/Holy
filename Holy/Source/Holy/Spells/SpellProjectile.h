@@ -17,8 +17,10 @@ class HOLY_API ASpellProjectile : public AActor
 	UStaticMeshComponent* ProjectileMesh;
 	UPROPERTY(EditAnywhere, Category = Components)
 	class UProjectileMovementComponent* ProjectileMovement;
+
+protected:
 	UPROPERTY(EditAnywhere, Category = ProjectileData)
-	float ProjectileSpeed = 0;
+	float ProjectileSpeed = 1;
 
 public:
 	ASpellProjectile();
