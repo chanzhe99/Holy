@@ -31,8 +31,7 @@ void ASpellProjectile::InitProjectile(FVector desiredDirection) const
 	//ProjectileMovement->InitialSpeed = ProjectileSpeed;
 }
 
-void ASpellProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-	FVector NormalImpulse, const FHitResult& Hit)
+void ASpellProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	
 }
