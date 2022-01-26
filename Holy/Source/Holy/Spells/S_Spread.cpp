@@ -91,8 +91,7 @@ void AS_Spread::Cast()
 
 		FVector direction = endPoint - bullet->GetActorLocation();
 		direction = direction.GetSafeNormal();
-		bullet->InitProjectile(ProjectileData);
-		bullet->GetProjectileMovement()->Velocity = direction * ProjectileData.speed;
+		bullet->InitProjectile(direction);
 		
 		//bullet->FindComponentByClass<UProjectileMovementComponent>()->SetVelocityInLocalSpace(direction * 1);
 		//bullet->FindComponentByClass<UPrimitiveComponent>()->AddImpulse(endPoint * 10);

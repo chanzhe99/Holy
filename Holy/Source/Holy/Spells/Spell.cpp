@@ -23,8 +23,8 @@ void ASpell::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	//UE_LOG(LogTemp, Warning, TEXT("%s - Tick"), *GetNameSafe(this));
 
-	if(SpellCD_Count < SpellCD)
-		SpellCD_Count += DeltaTime;
+	if(CD_Count < CD)
+		CD_Count += DeltaTime;
 }
 
 void ASpell::InitSpell(ADemon* demonRef)
@@ -37,6 +37,7 @@ void ASpell::InitSpell(ADemon* demonRef)
 void ASpell::AttachSpell(bool attachToLeftArm)
 {
 	SetActorTickEnabled(true);
+	CD_Count = CD;
 	IsOnLeftArm = attachToLeftArm;
 	if (IsOnLeftArm)
 	{
@@ -56,17 +57,7 @@ void ASpell::AttachSpell(bool attachToLeftArm)
 
 void ASpell::Cast()
 {
-	if(SpellCD_Count >= SpellCD)
-	{
-		SpellCD_Count = 0;
-		const FString debugString = FString::Printf(TEXT("%s casted"), *GetNameSafe(this));
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue, debugString);
-		//UE_LOG(LogTemp, Warning, TEXT("%s"), *debugString);
-	}
-	else
-	{
-		const FString debugString = FString::Printf(TEXT("%s is on CD"), *GetNameSafe(this));
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue, debugString);
-		//UE_LOG(LogTemp, Warning, TEXT("%s"), *debugString);
-	}
+	const FString debugString = FString::Printf(TEXT("%s casted"), *GetNameSafe(this));
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue, debugString);
+	//UE_LOG(LogTemp, Warning, TEXT("%s"), *debugString);
 }

@@ -19,15 +19,19 @@ class HOLY_API ADemon : public ACharacter
 
 	UPROPERTY(EditAnywhere, Category = Spells)
 	TSubclassOf<AS_Spread> BPS_Spread;
+	UPROPERTY()
 	AS_Spread* S_Spread;
 	UPROPERTY(EditAnywhere, Category = Spells)
 	TSubclassOf<AS_Grenade> BPS_Grenade;
+	UPROPERTY()
 	AS_Grenade* S_Grenade;
 	UPROPERTY(EditAnywhere, Category = Spells)
 	TSubclassOf<AS_Vacuum> BPS_Vacuum;
+	UPROPERTY()
 	AS_Vacuum* S_Vacuum;
 	UPROPERTY(EditAnywhere, Category = Spells)
 	TSubclassOf<AS_Water> BPS_Water;
+	UPROPERTY()
 	AS_Water* S_Water;
 	
 public:
