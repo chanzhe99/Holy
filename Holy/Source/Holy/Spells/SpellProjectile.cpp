@@ -25,7 +25,7 @@ ASpellProjectile::ASpellProjectile()
 	ProjectileMovement->bRotationFollowsVelocity = true;
 }
 
-void ASpellProjectile::InitProjectile(FVector desiredDirection) const
+void ASpellProjectile::InitProjectile(FVector desiredDirection)
 {
 	ProjectileMovement->Velocity = desiredDirection * ProjectileSpeed;
 	//ProjectileMovement->InitialSpeed = ProjectileSpeed;

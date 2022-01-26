@@ -35,7 +35,7 @@ void AS_Grenade::Cast()
 	const FVector spawnLocation = ProjectileSpawnOffset->GetComponentLocation();
 	const FRotator spawnRotation = ProjectileSpawnOffset->GetComponentRotation();
 	const FVector spawnDirection = Demon->GetControlRotation().Vector();
-	const ASpellProjectile* projectile = GetWorld()->SpawnActor<ASpellProjectile>(SpellProjectile, spawnLocation, spawnRotation);
+	ASpellProjectile* projectile = GetWorld()->SpawnActor<ASpellProjectile>(SpellProjectile, spawnLocation, spawnRotation);
 	projectile->InitProjectile(spawnDirection);
 	
 	DrawDebugLine(GetWorld(), spawnLocation, spawnLocation + spawnDirection * 500, FColor::Red, false, 5);
