@@ -17,12 +17,13 @@ class HOLY_API ASpellProjectile : public AActor
 	UStaticMeshComponent* ProjectileMesh;
 	UPROPERTY(EditAnywhere, Category = Components)
 	class UProjectileMovementComponent* ProjectileMovement;
+	UPROPERTY(EditAnywhere, Category = ProjectileData)
+	float ProjectileSpeed = 0;
 
 public:
 	ASpellProjectile();
 	
+	virtual void InitProjectile(FVector desiredDirection) const;
 	UFUNCTION()
 	virtual void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
-	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
-	void InitProjectile(struct FProjectileData desiredData) const;
 };

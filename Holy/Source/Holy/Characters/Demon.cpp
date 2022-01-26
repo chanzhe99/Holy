@@ -23,11 +23,12 @@ ADemon::ADemon()
 	ArmMesh_L = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("ArmMesh_Left"));
 	ArmMesh_L->SetupAttachment(Camera);
 	ArmMesh_L->CastShadow = false;
-	
 	ArmMesh_R = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("ArmMesh_Right"));
 	ArmMesh_R->SetupAttachment(Camera);
 	ArmMesh_R->CastShadow = false;
 
+	Spell_L_SpawnOffset = CreateDefaultSubobject<USceneComponent>(TEXT("Spell_L_SpawnOffset"));
+	Spell_L_SpawnOffset->SetupAttachment(ArmMesh_L);
 	Spell_R_SpawnOffset = CreateDefaultSubobject<USceneComponent>(TEXT("Spell_R_SpawnOffset"));
 	Spell_R_SpawnOffset->SetupAttachment(ArmMesh_R);
 }
@@ -120,12 +121,30 @@ void ADemon::Move_Y(float Value)
 
 void ADemon::CastSpell_L() const
 {
-	if(Spell_L)
+	if(Spell_L->CD_Count >= Spell_L->CD)
+	{
+		Spell_L->CD_Count = 0;
 		Spell_L->Cast();
+	}
+	else
+	{
+		const FString debugString = FString::Printf(TEXT("%s is on CD"), *GetNameSafe(Spell_L));
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue, debugString);
+		//UE_LOG(LogTemp, Warning, TEXT("%s"), *debugString);
+	}
 }
 
 void ADemon::CastSpell_R() const
 {
-	if(Spell_R)
+	if(Spell_R->CD_Count >= Spell_R->CD)
+	{
+		Spell_R->CD_Count = 0;
 		Spell_R->Cast();
+	}
+	else
+	{
+		const FString debugString = FString::Printf(TEXT("%s is on CD"), *GetNameSafe(Spell_R));
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue, debugString);
+		//UE_LOG(LogTemp, Warning, TEXT("%s"), *debugString);
+	}
 }
