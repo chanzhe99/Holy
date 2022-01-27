@@ -16,9 +16,6 @@ public :
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Shotgun)
 		float BulletAngle = 5.0f; 
 
-	/*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Shotgun)
-		float BulletSpeed;*/
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Shotgun)
 		float StartingBulletAngle;
 

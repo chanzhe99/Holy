@@ -6,13 +6,23 @@
 #include "GameFramework/Character.h"
 #include "Enemy.generated.h"
 
+UENUM()
+enum E_EnemyStatus
+{
+	PIERCED		UMETA(DisplayName = "Pierced"),
+	STICKIED	UMETA(DisplayName = "Stickied"),
+	VACUUMED	UMETA(DisplayName = "Vacuumed"),
+	DRENCHED	UMETA(DisplayName = "Wet"),
+	ELECTRIFIED	UMETA(DisplayName = "Electrified")
+};
+
 UCLASS()
 class HOLY_API AEnemy : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
+	E_EnemyStatus EnemyStatus;
 	AEnemy();
 
 protected:

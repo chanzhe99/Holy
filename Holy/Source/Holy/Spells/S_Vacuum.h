@@ -14,6 +14,9 @@ class HOLY_API AS_Vacuum : public ASpell
 public:
 	AS_Vacuum();
 
+private:
+	void SpawnSuck();
+
 protected:
 	virtual void BeginPlay() override;
 
