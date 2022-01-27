@@ -26,6 +26,7 @@ public:
 	AEnemy();
 
 protected:
+	int32 EnemyHP = 5;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -36,4 +37,5 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	virtual void ApplyDamage(int damage);
 };

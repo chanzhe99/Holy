@@ -3,6 +3,8 @@
 
 #include "Enemy.h"
 
+#include "DrawDebugHelpers.h"
+
 // Sets default values
 AEnemy::AEnemy()
 {
@@ -30,5 +32,17 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void AEnemy::ApplyDamage(int damage)
+{
+	EnemyHP -= damage;
+		
+	const FString debugString = FString::Printf(TEXT("Taken Damage: %d\n Remaining HP: %d"), damage, EnemyHP);
+	DrawDebugString(GetWorld(), GetActorLocation() + FVector(0, 0, 100), debugString, 0, FColor::Orange, 3);
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *debugString);
+	
+	if(EnemyHP <= 0)
+		Destroy();
 }
 
