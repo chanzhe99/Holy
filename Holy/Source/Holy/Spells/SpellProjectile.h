@@ -15,11 +15,10 @@ class HOLY_API ASpellProjectile : public AActor
 	class USphereComponent* ProjectileCollider;
 	UPROPERTY(EditAnywhere, Category = Components)
 	UStaticMeshComponent* ProjectileMesh;
-
-protected:
 	UPROPERTY(EditAnywhere, Category = Components)
 	class UProjectileMovementComponent* ProjectileMovement;
 
+protected:
 	UPROPERTY(EditAnywhere, Category = ProjectileData)
 	float ProjectileSpeed = 1;
 

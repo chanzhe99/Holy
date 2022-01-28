@@ -21,6 +21,11 @@ void AS_Vacuum::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void AS_Vacuum::InitSpell(ADemon* demonRef)
+{
+	Super::InitSpell(demonRef);
+}
+
 void AS_Vacuum::Cast()
 {
 	Super::Cast();

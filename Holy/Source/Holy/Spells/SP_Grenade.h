@@ -12,10 +12,6 @@ class HOLY_API ASP_Grenade : public ASpellProjectile
 	GENERATED_BODY()
 
 	FTimerHandle GrenadeTimerHandle;
-	UPROPERTY(EditAnywhere, Category = Attributes)
-	float DetonationTime = 2.f;
-	UPROPERTY(EditAnywhere, Category = Attributes)
-	float ExplosionRadius = 500.f;
 	
 public:
 	ASP_Grenade();

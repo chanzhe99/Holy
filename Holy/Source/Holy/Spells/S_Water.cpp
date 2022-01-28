@@ -17,6 +17,11 @@ void AS_Water::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void AS_Water::InitSpell(ADemon* demonRef)
+{
+	Super::InitSpell(demonRef);
+}
+
 void AS_Water::Cast()
 {
 	Super::Cast();

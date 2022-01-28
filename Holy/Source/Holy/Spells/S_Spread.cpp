@@ -26,6 +26,11 @@ void AS_Spread::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void AS_Spread::InitSpell(ADemon* demonRef)
+{
+	Super::InitSpell(demonRef);
+}
+
 void AS_Spread::Cast()
 {
 	Super::Cast();
@@ -58,7 +63,7 @@ void AS_Spread::Cast()
 			CollisionParams);
 
 		//Debug Line.
-		//DrawDebugLine(GetWorld(), cameraTransform, endPoint, FColor::Green, false, 2.f, false, 4.f);
+		DrawDebugLine(GetWorld(), cameraTransform, endPoint, FColor::Green, false, 2.f, false, 4.f);
 
 		//Spawn it
 		SpawnPellet(endPoint);

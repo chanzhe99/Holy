@@ -26,10 +26,6 @@ public:
 	AEnemy();
 
 protected:
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
-	int EnemyHP;
-	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -40,8 +36,4 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	virtual void ApplyDamage(int damage);
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy")
-	void SendDeathNotification();
 };
