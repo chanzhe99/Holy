@@ -35,6 +35,10 @@ void ASpell::InitSpell(ADemon* demonRef, USceneComponent* projectileOffsetComp, 
 	IsOnLeftArm = isLeftArm;
 	AttachToActor(Demon, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 	//UE_LOG(LogTemp, Warning, TEXT("%s attached to Left Arm"), *GetNameSafe(this));
+	if(IsOnLeftArm)
+		Demon->ArmMesh_L->PlayAnimation(ReloadAnim_L, false);
+	else
+		Demon->ArmMesh_R->PlayAnimation(ReloadAnim_R, false);
 }
 
 /*void ASpell::AttachSpell(bool attachToLeftArm)
