@@ -27,17 +27,20 @@ void ASpell::Tick(float DeltaTime)
 		CD_Count += DeltaTime;
 }
 
-void ASpell::InitSpell(ADemon* demonRef)
+void ASpell::InitSpell(ADemon* demonRef, USceneComponent* projectileOffsetComp, bool isLeftArm)
 {
-	SetActorTickEnabled(false);
-	SetActorLocation(FVector(0, 0, -4000));
 	Demon = demonRef;
+	CD_Count = CD;
+	ProjectileSpawnOffset = projectileOffsetComp;
+	IsOnLeftArm = isLeftArm;
+	AttachToActor(Demon, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	//UE_LOG(LogTemp, Warning, TEXT("%s attached to Left Arm"), *GetNameSafe(this));
 }
 
-void ASpell::AttachSpell(bool attachToLeftArm)
+/*void ASpell::AttachSpell(bool attachToLeftArm)
 {
 	SetActorTickEnabled(true);
-	CD_Count = CD;
+	
 	IsOnLeftArm = attachToLeftArm;
 	if (IsOnLeftArm)
 	{
@@ -53,7 +56,7 @@ void ASpell::AttachSpell(bool attachToLeftArm)
 		AttachToActor(Demon, FAttachmentTransformRules::SnapToTargetNotIncludingScale, "Spell_R");
 		//UE_LOG(LogTemp, Warning, TEXT("%s attached to Right Arm"), *GetNameSafe(this));
 	}
-}
+}*/
 
 void ASpell::Cast()
 {

@@ -62,7 +62,7 @@ protected:
 
 public:
 	virtual void Tick(float DeltaTime) override;
-	virtual void InitSpell(ADemon* demonRef);
-	virtual void AttachSpell(bool attachToLeftArm);
+	virtual void InitSpell(ADemon* demonRef, USceneComponent* spellProjectileOffset, bool isLeftArm);
+	//virtual void AttachSpell(bool attachToLeftArm);
 	virtual void Cast();
 };

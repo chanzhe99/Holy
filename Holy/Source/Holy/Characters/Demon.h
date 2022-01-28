@@ -12,6 +12,15 @@ class AS_Grenade;
 class AS_Vacuum;
 class AS_Water;
 
+UENUM(BlueprintType)
+enum class E_SpellType : uint8
+{
+	SPREAD	= 0	UMETA(DisplayName = "Spread"),
+	GRENADE	= 1	UMETA(DisplayName = "Grenade"),
+	VACUUM	= 2	UMETA(DisplayName = "Vacuum"),
+	WATER	= 3	UMETA(DisplayName = "Water")
+};
+
 UCLASS()
 class HOLY_API ADemon : public ACharacter
 {
@@ -33,6 +42,11 @@ class HOLY_API ADemon : public ACharacter
 	TSubclassOf<AS_Water> BPS_Water;
 	UPROPERTY()
 	AS_Water* S_Water;
+
+	UPROPERTY(EditAnywhere, Category = Spells)
+	TEnumAsByte<E_SpellType> SpellType_L;
+	UPROPERTY(EditAnywhere, Category = Spells)
+	TEnumAsByte<E_SpellType> SpellType_R;
 	
 public:
 	UPROPERTY(VisibleAnywhere)
@@ -58,6 +72,8 @@ protected:
 
 public:
 	virtual void Tick(float DeltaTime) override;
+
+	void SpawnAndAttachSpell(TSubclassOf<ASpell> spellToSpawn, ASpell*& spellAttachHand, USceneComponent* projectileOffsetComp, bool isLeftArm);
 
 	void Look_X(float Value);
 	void Look_Y(float Value);

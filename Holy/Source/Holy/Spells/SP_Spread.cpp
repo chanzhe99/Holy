@@ -7,6 +7,7 @@
 
 ASP_Spread::ASP_Spread()
 {
+
 }
 
 void ASP_Spread::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
