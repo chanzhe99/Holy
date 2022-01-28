@@ -13,6 +13,11 @@ UCLASS()
 class HOLY_API ASP_Spread : public ASpellProjectile
 {
 	GENERATED_BODY()
+	
+	UPROPERTY(EditAnywhere, Category = Attributes)
+	float KnockBackForce;
+	UPROPERTY(EditAnywhere, Category = Attributes)
+	int Damage;
 
 public:
 	ASP_Spread();
