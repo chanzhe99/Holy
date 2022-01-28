@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Math/UnrealMathUtility.h"
 #include "Holy/Characters/Enemy.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 void ASP_Vacuum::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
@@ -58,9 +59,10 @@ void ASP_Vacuum::DoBigSuck(float deltaTime)
 
 		if (PrimComp)
 		{
-			//UE_LOG(LogTemp, Warning, TEXT("%s"), *hit.GetActor()->GetName());
-			PrimComp->SetSimulatePhysics(true);
-			PrimComp->AddRadialImpulse(GetActorLocation(), 500.f, -200000.f, ERadialImpulseFalloff::RIF_Constant, false);
+			UE_LOG(LogTemp, Warning, TEXT("I am attempting to suck"));
+			hitEnemy->GetMovementComponent()->AddRadialImpulse(GetActorLocation(), 500.f, -200000.f, ERadialImpulseFalloff::RIF_Constant, false);
+			//PrimComp->SetSimulatePhysics(true);
+			//PrimComp->AddRadialImpulse(GetActorLocation(), 500.f, -200000.f, ERadialImpulseFalloff::RIF_Constant, false);
 			
 			if (!suckingActors.Contains(hit.GetActor()))
 			{
@@ -80,9 +82,12 @@ void ASP_Vacuum::StopBigSuck()
 			continue;
 		}
 
+		AEnemy* hitEnemy = Cast<AEnemy>(Actor);
+
 		UPrimitiveComponent* PrimComp = Cast<UPrimitiveComponent>(Actor->GetRootComponent());
-		PrimComp->SetSimulatePhysics(false);
-		PrimComp->SetPhysicsLinearVelocity(FVector::ZeroVector);
+		hitEnemy->GetMovementComponent()->StopMovementImmediately();
+		//PrimComp->SetSimulatePhysics(false);
+		//PrimComp->SetPhysicsLinearVelocity(FVector::ZeroVector);
 	}
 }
 
