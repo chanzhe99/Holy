@@ -5,6 +5,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Math/UnrealMathUtility.h"
+#include "Holy/Characters/Enemy.h"
 
 void ASP_Vacuum::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
@@ -46,13 +47,20 @@ void ASP_Vacuum::DoBigSuck(float deltaTime)
 
 	for (FHitResult& hit : OutResults)
 	{
-		UStaticMeshComponent* MeshComp = Cast<UStaticMeshComponent>((hit.GetActor())->GetRootComponent());
-
-		if (MeshComp)
+		AEnemy* hitEnemy = Cast<AEnemy>(hit.GetActor());
+		
+		if (!hitEnemy)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("%s"), *hit.GetActor()->GetName());
+			continue;
+		}
 
-			MeshComp->AddRadialImpulse(GetActorLocation(), 500.f, -200000.f, ERadialImpulseFalloff::RIF_Constant, false);
+		UPrimitiveComponent* PrimComp = Cast<UPrimitiveComponent>(hit.GetComponent());
+
+		if (PrimComp)
+		{
+			//UE_LOG(LogTemp, Warning, TEXT("%s"), *hit.GetActor()->GetName());
+			PrimComp->SetSimulatePhysics(true);
+			PrimComp->AddRadialImpulse(GetActorLocation(), 500.f, -200000.f, ERadialImpulseFalloff::RIF_Constant, false);
 			
 			if (!suckingActors.Contains(hit.GetActor()))
 			{
@@ -66,7 +74,15 @@ void ASP_Vacuum::StopBigSuck()
 {
 	for (AActor* Actor : suckingActors)
 	{
-		Actor->GetVelocity() = FVector::ZeroVector;
+		if (!Actor)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Hello, I am empty inside."));
+			continue;
+		}
+
+		UPrimitiveComponent* PrimComp = Cast<UPrimitiveComponent>(Actor->GetRootComponent());
+		PrimComp->SetSimulatePhysics(false);
+		PrimComp->SetPhysicsLinearVelocity(FVector::ZeroVector);
 	}
 }
 
