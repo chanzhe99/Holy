@@ -4,6 +4,7 @@
 #include "SP_Spread.h"
 #include "DrawDebugHelpers.h"
 #include "Holy/Characters/Enemy.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 ASP_Spread::ASP_Spread()
 {
@@ -14,10 +15,12 @@ void ASP_Spread::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimit
 {
 	Super::OnHit(HitComp, OtherActor, OtherComp, NormalImpulse, Hit);
 	AEnemy* hitEnemy = Cast<AEnemy>(OtherActor);
-	
+	ACharacter* character = Cast<ACharacter>(OtherActor);
 	if (hitEnemy)
 	{
-		OtherComp->AddImpulse(GetActorForwardVector()* KnockBackForce);
+		//OtherComp->AddImpulse(GetActorForwardVector()* KnockBackForce);
+		UCharacterMovementComponent* cute = character->GetCharacterMovement();
+		cute->AddImpulse(GetActorForwardVector() * KnockBackForce);
 		hitEnemy->ApplyDamage(Damage);
 	}
 
