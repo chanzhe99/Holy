@@ -37,64 +37,59 @@ void ADemon::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if(IsValid(BPS_Spread))
+	switch (SpellType_L)
 	{
-		S_Spread = GetWorld()->SpawnActor<AS_Spread>(BPS_Spread);
-		S_Spread->InitSpell(this);	
-	}
-	else
-	{
-		const FString debugString = FString(TEXT("BPS_Spread BP class not found in Demon BP, please fill in BPS_Spread in Demon BP"));
-		GEngine->AddOnScreenDebugMessage(96, 999.f, FColor::Red, debugString);
-		UE_LOG(LogTemp, Error, TEXT("%s"), *debugString);
-	}
-
-	if(IsValid(BPS_Grenade))
-	{
-		S_Grenade = GetWorld()->SpawnActor<AS_Grenade>(BPS_Grenade);
-		S_Grenade->InitSpell(this);
-	}
-	else
-	{
-		const FString debugString = FString(TEXT("BPS_Grenade BP class not found in Demon BP, please fill in BPS_Grenade in Demon BP"));
-		GEngine->AddOnScreenDebugMessage(97, 999.f, FColor::Red, debugString);
-		UE_LOG(LogTemp, Error, TEXT("%s"), *debugString);
+	case E_SpellType::SPREAD:
+		SpawnAndAttachSpell(BPS_Spread, Spell_L, Spell_L_SpawnOffset, true);
+		break;
+	case E_SpellType::GRENADE:
+		SpawnAndAttachSpell(BPS_Grenade, Spell_L, Spell_L_SpawnOffset, true);
+		break;
+	case E_SpellType::VACUUM:
+		SpawnAndAttachSpell(BPS_Vacuum, Spell_L, Spell_L_SpawnOffset, true);
+		break;
+	case E_SpellType::WATER:
+		SpawnAndAttachSpell(BPS_Water, Spell_L, Spell_L_SpawnOffset, true);
+		break;
 	}
 
-	if(IsValid(BPS_Vacuum))
+	switch (SpellType_R)
 	{
-		S_Vacuum = GetWorld()->SpawnActor<AS_Vacuum>(BPS_Vacuum);
-		S_Vacuum->InitSpell(this);
-	}
-	else
-	{
-		const FString debugString = FString(TEXT("BPS_Vacuum BP class not found in Demon BP, please fill in BPS_Vacuum in Demon BP"));
-		GEngine->AddOnScreenDebugMessage(98, 999.f, FColor::Red, debugString);
-		UE_LOG(LogTemp, Error, TEXT("%s"), *debugString);
-	}
-
-	if(IsValid(BPS_Water))
-	{
-		S_Water = GetWorld()->SpawnActor<AS_Water>(BPS_Water);
-		S_Water->InitSpell(this);
-	}
-	else
-	{
-		const FString debugString = FString(TEXT("BPS_Water BP class not found in Demon BP, please fill in BPS_Water in Demon BP"));
-		GEngine->AddOnScreenDebugMessage(99, 9999.f, FColor::Red, debugString);
-		UE_LOG(LogTemp, Error, TEXT("%s"), *debugString);
+	case E_SpellType::SPREAD:
+		SpawnAndAttachSpell(BPS_Spread, Spell_R, Spell_R_SpawnOffset, true);
+		break;
+	case E_SpellType::GRENADE:
+		SpawnAndAttachSpell(BPS_Grenade, Spell_R, Spell_R_SpawnOffset, true);
+		break;
+	case E_SpellType::VACUUM:
+		SpawnAndAttachSpell(BPS_Vacuum, Spell_R, Spell_R_SpawnOffset, true);
+		break;
+	case E_SpellType::WATER:
+		SpawnAndAttachSpell(BPS_Water, Spell_R, Spell_R_SpawnOffset, true);
+		break;
 	}
 
-	if(S_Spread)
-		S_Spread->AttachSpell(true);
-	if(S_Vacuum)
-		S_Vacuum->AttachSpell(false);
 }
 
 void ADemon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ADemon::SpawnAndAttachSpell(TSubclassOf<ASpell> spellToSpawn, ASpell*& spellAttachHand, USceneComponent* projectileOffsetComp, bool isLeftArm)
+{
+	if(IsValid(spellToSpawn))
+	{
+		spellAttachHand = GetWorld()->SpawnActor<ASpell>(spellToSpawn);
+		spellAttachHand->InitSpell(this, projectileOffsetComp, isLeftArm);
+	}
+	else
+	{
+		const FString debugString = FString::Printf(TEXT("%s BP class reference not found in Demon BP"), *GetNameSafe(spellToSpawn));
+		GEngine->AddOnScreenDebugMessage(96, 999.f, FColor::Red, debugString);
+		UE_LOG(LogTemp, Error, TEXT("%s"), *debugString);
+	}
 }
 
 void ADemon::Look_X(float Value)
