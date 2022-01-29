@@ -18,9 +18,9 @@ void ASP_Spread::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimit
 	ACharacter* character = Cast<ACharacter>(OtherActor);
 	if (hitEnemy)
 	{
-		//OtherComp->AddImpulse(GetActorForwardVector()* KnockBackForce);
-		UCharacterMovementComponent* cute = character->GetCharacterMovement();
-		cute->AddImpulse(GetActorForwardVector() * KnockBackForce);
+		UCharacterMovementComponent* characterMovement = character->GetCharacterMovement();
+		characterMovement->StopMovementImmediately();
+		characterMovement->AddImpulse(GetActorForwardVector() * KnockBackForce);
 		hitEnemy->ApplyDamage(Damage);
 	}
 

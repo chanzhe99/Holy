@@ -42,15 +42,9 @@ void ASP_Vacuum::DoBigSuck(float deltaTime)
 	// Ignore self or remove this line to not ignore any
 	ignoreActors.Init(this, 1);
 
-	/*UKismetSystemLibrary::SphereTraceMulti(GetWorld(), GetActorLocation(), GetActorLocation() + FVector::OneVector * 0.001, MySphere.GetSphereRadius(),
-		ETraceTypeQuery::TraceTypeQuery1, false, ignoreActors, EDrawDebugTrace::ForDuration, OutResults, true);*/
-
 	UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), GetActorLocation(), GetActorLocation() + FVector::OneVector * 0.001, 
 		MySphere.GetSphereRadius(), objectTypesArray, false, ignoreActors, EDrawDebugTrace::ForDuration, OutResults, true);
 
-
-	UE_LOG(LogTemp, Warning, TEXT("Out results : , %d"), OutResults.Num());
-	
 	for (FHitResult& hit : OutResults)
 	{
 		AEnemy* hitEnemy = Cast<AEnemy>(hit.GetActor());
@@ -65,7 +59,6 @@ void ASP_Vacuum::DoBigSuck(float deltaTime)
 		if (PrimComp)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("I am attempting to suck : %s"), *GetNameSafe(hit.GetComponent()));
-			//hitEnemy->GetMovementComponent()->AddRadialImpulse(GetActorLocation(), 500.f, -200000.f, ERadialImpulseFalloff::RIF_Constant, false);
 			PrimComp->SetSimulatePhysics(true);
 			PrimComp->AddRadialImpulse(GetActorLocation(), 500.f, -200000.f, ERadialImpulseFalloff::RIF_Constant, false);
 			
@@ -81,12 +74,6 @@ void ASP_Vacuum::StopBigSuck()
 {
 	for (AActor* Actor : suckingActors)
 	{
-		if (!Actor)
-		{
-			//UE_LOG(LogTemp, Warning, TEXT("Hello, I am empty inside."));
-			continue;
-		}
-
 		UPrimitiveComponent* PrimComp = Cast<UPrimitiveComponent>(Actor->GetRootComponent());
 		PrimComp->SetSimulatePhysics(false);
 		PrimComp->SetPhysicsLinearVelocity(FVector::ZeroVector);
