@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "SpellProjectile.h"
+#include "Engine/EngineTypes.h"
 #include "SP_Vacuum.generated.h"
 
 /**
@@ -29,7 +30,10 @@ public:
 	UPROPERTY(EditAnywhere, Category = SuckProperties)
 	float VacuumIntervalMax;
 	UPROPERTY(EditAnywhere, Category = SuckProperties)
+	TArray<TEnumAsByte<EObjectTypeQuery>> objectTypesArray;
+	UPROPERTY(EditAnywhere, Category = SuckProperties)
 	TArray<AActor*> suckingActors;
+
 
 private:
 	void DoBigSuck(float deltaTime);
