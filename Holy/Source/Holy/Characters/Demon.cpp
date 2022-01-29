@@ -71,6 +71,14 @@ void ADemon::BeginPlay()
 
 }
 
+void ADemon::SendGotHitNotification_Implementation(int damageTaken)
+{
+}
+
+void ADemon::SendDeathNotification_Implementation()
+{
+}
+
 void ADemon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -141,5 +149,19 @@ void ADemon::CastSpell_R() const
 		const FString debugString = FString::Printf(TEXT("%s is on CD"), *GetNameSafe(Spell_R));
 		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue, debugString);
 		//UE_LOG(LogTemp, Warning, TEXT("%s"), *debugString);
+	}
+}
+
+void ADemon::ApplyDamage_Implementation(int damage)
+{
+	int hpBeforeDeduction = CurrentHP;
+	CurrentHP -= FMath::Abs(damage);
+
+	if (CurrentHP <= 0)
+		SendDeathNotification();
+	else
+	{
+		int hpDifference = (damage < hpBeforeDeduction) ? (damage) : (hpBeforeDeduction);
+		SendGotHitNotification(hpDifference);
 	}
 }

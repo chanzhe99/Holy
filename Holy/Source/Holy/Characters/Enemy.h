@@ -33,6 +33,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy")
+	void SendDeathNotification();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -41,7 +44,4 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	virtual void ApplyDamage(int damage);
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy")
-	void SendDeathNotification();
 };

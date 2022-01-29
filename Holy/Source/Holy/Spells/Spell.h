@@ -32,10 +32,23 @@ protected:
 	UPROPERTY(EditAnywhere, Category = Mesh)
 	UStaticMeshComponent* SpellMesh;
 	
-	UPROPERTY(EditAnywhere, Category = Spell)
-	UAnimationAsset* SpellAnim_L;
-	UPROPERTY(EditAnywhere, Category = Spell)
-	UAnimationAsset* SpellAnim_R;
+	UPROPERTY(EditAnywhere, Category = SpellAnimations)
+	UAnimationAsset* PreCastIdleAnim_L;
+	UPROPERTY(EditAnywhere, Category = SpellAnimations)
+	UAnimationAsset* CastAnim_L;
+	UPROPERTY(EditAnywhere, Category = SpellAnimations)
+	UAnimationAsset* PostCastIdleAnim_L;
+	UPROPERTY(EditAnywhere, Category = SpellAnimations)
+	UAnimationAsset* ReloadAnim_L;
+	
+	UPROPERTY(EditAnywhere, Category = SpellAnimations)
+	UAnimationAsset* PreCastIdleAnim_R;
+	UPROPERTY(EditAnywhere, Category = SpellAnimations)
+	UAnimationAsset* CastAnim_R;
+	UPROPERTY(EditAnywhere, Category = SpellAnimations)
+	UAnimationAsset* PostCastIdleAnim_R;
+	UPROPERTY(EditAnywhere, Category = SpellAnimations)
+	UAnimationAsset* ReloadAnim_R;
 
 	UPROPERTY(EditDefaultsOnly, Category = Spell)
 	TSubclassOf<class ASpellProjectile> SpellProjectile;
