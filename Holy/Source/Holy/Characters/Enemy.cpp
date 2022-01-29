@@ -20,6 +20,10 @@ void AEnemy::BeginPlay()
 	
 }
 
+void AEnemy::SendDeathNotification_Implementation()
+{
+}
+
 // Called every frame
 void AEnemy::Tick(float DeltaTime)
 {
@@ -44,9 +48,4 @@ void AEnemy::ApplyDamage(int damage)
 	
 	if (EnemyHP <= 0)
 		SendDeathNotification();
-}
-
-void AEnemy::SendDeathNotification_Implementation()
-{
-
 }

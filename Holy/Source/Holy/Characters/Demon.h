@@ -68,7 +68,20 @@ public:
 	ADemon();
 
 protected:
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player")
+	int CurrentHP;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player")
+	bool IsDead;
+
 	virtual void BeginPlay() override;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Player")
+	void SendGotHitNotification(int damageTaken);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Player")
+	void SendDeathNotification();
 
 public:
 	virtual void Tick(float DeltaTime) override;
@@ -82,4 +95,7 @@ public:
 
 	void CastSpell_L() const;
 	void CastSpell_R() const;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Player")
+	void ApplyDamage(int damage);
 };
