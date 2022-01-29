@@ -20922,10 +20922,6 @@
 			"Type": "UFS"
 		},
 		{
-			"Path": "$(EngineDir)/Content/Slate/Fonts/BIZ-UDGothicR.ttc",
-			"Type": "UFS"
-		},
-		{
 			"Path": "$(EngineDir)/Content/Slate/Fonts/DroidSans.tps",
 			"Type": "UFS"
 		},
@@ -20987,10 +20983,6 @@
 		},
 		{
 			"Path": "$(EngineDir)/Content/Slate/Fonts/Roboto.tps",
-			"Type": "UFS"
-		},
-		{
-			"Path": "$(EngineDir)/Content/Slate/Fonts/ƒAƒvƒŠ–¾’©UD.otf",
 			"Type": "UFS"
 		},
 		{
